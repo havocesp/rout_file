@@ -16,9 +16,22 @@ user_password = 'kiramira000'
 
 
 def login(driver):
+    actions = ActionChains(driver)
+
     try:
         driver.get(url)
         driver.maximize_window()
+
+        try:
+            elem = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="challengeButton"]'))
+            )
+            actions.click_and_hold(elem).perform()
+            sleep(3)
+            actions.release().perform()
+        except:
+            pass
+
         element_start = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, '//*[@id="body"]/div[1]/header/div[1]/div[2]/div/ul[2]/li[2]/a/span[2]'))
         )
