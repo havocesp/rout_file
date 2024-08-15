@@ -31,9 +31,9 @@ with open('config.txt') as file:
 
 options.add_extension(ext)
 
-proxy_address = "45.130.254.133"
-proxy_login = 'K0nENe'
-proxy_password = 'uw7RQ3'
+proxy_address = "45.142.31.82"
+proxy_login = 'EeHUrd'
+proxy_password = 'xBJeLY'
 proxy_port = 8000
 
 proxy_options = {
@@ -102,32 +102,30 @@ def login(driver):
     driver.get(url)
 
     try:
-        click(driver, 30, '//*[@id="__nuxt"]/div/div/div/header/div[1]/div/div[3]/div/button[2]')
+        # input("press")
+        click(driver, 30, '(//button[@type="button"])[2]/div')
         input_data(driver, 30, '//input[@type="email"]', user_email)
         input_data(driver, 30, '//input[@type="password"]', user_password)
-        click(driver, 30, '//*[@id="__nuxt"]/div/div/div/header/div[3]/div/div/div[2]/div/div[3]/div[2]/button')
+        click(driver, 30, '//button[@type="submit"]')
     except Exception as e:
-        return {"status": "0", "ext": f"error login \n{e}"}
+        print(f"Error log {e}")
 
     try:
-        sleep(4.5)
-        js_click(driver, 30, '//div[@class="popup-top-cross"]')
-        click(driver, 30, '//*[@id="__nuxt"]/div/div/div/header/div[1]/div/div[4]/div/div[2]/div[1]/button')
-        js_click(driver, 30, "//div[contains(@class, 'deposit-wallet-name') and text()='USDT TRC-20']")
+        sleep(6)
+        js_click(driver, 30, '//button[@class="button deposit-button default-active"]')
+        js_click(driver, 30, '(//div[@class="deposit-wallet-box"])[2]')
     except Exception as e:
-        input("press")
-        return {"status": "0", "ext": f"error depos trc20 \n{e}"}
+        print(f"error depos trc20 \n{e}")
 
     try:
         sleep(5)
-        input_data(driver, 5, '//*[@id="__nuxt"]/div/div/div/header/div[3]/div/div[2]/div/div[2]/div[1]/div[2]/div[2]/input', '5')
+        input_data(driver, 5, '//input[@type="number"]', '5')
     except:
         pass
 
     try:
-        click(driver, 30, '//*[@id="__nuxt"]/div/div/div/header/div[3]/div/div[2]/div/div[2]/div[4]/button')
+        click(driver, 30, '//button[@class="default-button-container deposit-controls-submit"]')
     except Exception as e:
-        input("prs")
         return {"status": "0", "ext": f"error click depos but \n{e}"}
 
 
