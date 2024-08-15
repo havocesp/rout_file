@@ -28,9 +28,9 @@ with open('config.txt') as file:
 # options.binary_location = chrome_path
 options.add_extension(ext)
 
-proxy_address = "45.130.254.133"
-proxy_login = 'K0nENe'
-proxy_password = 'uw7RQ3'
+proxy_address = "45.153.217.11"
+proxy_login = 'r1ELmF'
+proxy_password = 'bscAjX'
 proxy_port = 8000
 
 proxy_options = {
@@ -97,16 +97,34 @@ def login(driver):
 
     try:
         click(driver, 90, '//div[@data-testid="at_login_tab"]')
-        input_data(driver, 90, '//*[@id="app"]/div/div/div/div/div/div[1]/div[5]/div[2]/div[1]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/div[1]/div[1]/div/div[2]/div/div/div/div/div[2]/div[1]/div[1]/div/input', user_email)
-        input_data(driver, 60, '//*[@id="app"]/div/div/div/div/div/div[1]/div[5]/div[2]/div[1]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/div[1]/div[1]/div/div[2]/div/div/div/div/div[2]/div[1]/div[3]/div/input', user_password)
+        input_data(driver, 90, '(//input[@data-testid="at_email_input"])[2]', user_email)
+        input_data(driver, 60, '(//input[@data-testid="at_password_input"])[2]', user_password)
         click(driver, 30, '//div[@data-testid="at_login_button"]')
     except Exception as e:
         print(f'ERROR LOGIN \n{e}')
         return {"status": "0", "ext": f"Login error \n{e}"}
 
     try:
+        time_loop = 0
+        while True:
+            driver.implicitly_wait(10)
+            find_check = driver.find_element(By.XPATH, '//div[@class="captcha-solver-info"]').text
+            if ("ена" in find_check) or ("lve" in find_check):
+                # click(driver, 30, '//*[@id="content"]/div/div[2]/div[2]/div/form/div[4]/button')
+                break
+            else:
+                if time_loop > 120:
+                    return {"status": "0", "ext": "CAPTCHA ERROR"}
+                time_loop += 5
+                sleep(5)
+                print("Wait 5 seconds, captcha solving...")
+    except Exception as e:
+        print(f'ERROR CHECKBOX \n{e}')
+
+    try:
+        sleep(10)
         driver.implicitly_wait(90)
-        get_href = driver.find_element(By.XPATH, '//*[@id="app"]/div/div/div/div/div/div[1]/div[5]/div[2]/div[1]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div[2]/iframe').get_attribute('src')
+        get_href = driver.find_element(By.XPATH, '(//div/iframe)[1]').get_attribute('src')
         driver.get(get_href)
     except Exception as e:
         return {"status": "0", "ext": f"GET SRC \n{e}"}
