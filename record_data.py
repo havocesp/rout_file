@@ -2,8 +2,8 @@ import importlib.util
 import json
 import sys
 from flask import Flask, request
-from random import randint
 import socket
+import secrets
 
 app = Flask(__name__)
 
@@ -39,7 +39,7 @@ def selenium_route(project_name):
 
 def find_free_port():
     while True:
-        port = randint(1000, 9000)
+        port = secrets.SystemRandom().randint(1000, 9000)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if s.connect_ex(('localhost', port)) != 0:
                 return port
