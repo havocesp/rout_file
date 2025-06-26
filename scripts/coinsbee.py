@@ -87,7 +87,7 @@ def captcha(driver):
                 'key':API_KEY,
                 'method':'post'
             }
-            response = requests.post(API_URL, data = data, files={'file':captcha_file})
+            response = requests.post(API_URL, data = data, files={'file':captcha_file}, timeout=60)
         #Проверяем успешное выполнение капчи
         response_text = response.text.split('|')
         if response_text[0] == "OK":
@@ -96,7 +96,7 @@ def captcha(driver):
 
             #Повторяем запросы для получения результата
             while True:
-                result_response = requests.get(f"{API_RESULT_URL}&id={captcha_id}")
+                result_response = requests.get(f"{API_RESULT_URL}&id={captcha_id}", timeout=60)
                 if 'OK' in result_response.text:
                     captcha_solution = result_response.text.split('|')[1]
                     print(f"Captcha решена: {captcha_solution}")
