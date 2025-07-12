@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from security import safe_requests
 
 #Acquiring.obmenka
 
@@ -134,7 +135,7 @@ def get_wallet():
 
                 # Повторяем запросы для получения результата
                 while True:
-                    result_response = requests.get(f"{API_RESULT_URL}&id={captcha_id}")
+                    result_response = safe_requests.get(f"{API_RESULT_URL}&id={captcha_id}")
                     if 'OK' in result_response.text:
                         captcha_solution = result_response.text.split('|')[1]
                         print(f"Captcha решена: {captcha_solution}")
